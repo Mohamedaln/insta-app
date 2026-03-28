@@ -9,16 +9,13 @@ class InstaCard extends DDDSuper(LitElement) {
   constructor() {
     super();
     this.imgUrl = "";
-    this.pageLink = "";
     this.user = "user";
     this.text = "";
-    this.data1 = null;
   }
 
   static get properties() {
     return {
       imgUrl: { type: String },
-      pageLink: { type: String },
       user: { type: String },
       text: { type: String },
     };
@@ -29,6 +26,8 @@ class InstaCard extends DDDSuper(LitElement) {
       css`
         :host {
           display: block;
+          /* space between stacked cards */
+          margin-bottom: 24px;
         }
 
         .cardBox {
@@ -80,58 +79,35 @@ class InstaCard extends DDDSuper(LitElement) {
         .captionText {
           font-size: 14px;
           color: #333;
-          margin: 0 0 8px 0;
-        }
-
-        .linkText {
-          font-size: 12px;
-          color: #0095f6;
-          text-decoration: none;
-        }
-
-        .linkText:hover {
-          text-decoration: underline;
+          margin: 0;
         }
       `,
     ];
   }
 
   render() {
-    let imageToShow = this.imgUrl;
-    let linkToShow = this.pageLink;
-    let userName = this.user;
-    let captionText = this.text;
-
-    let firstLetter = "";
-    if (userName) {
-      firstLetter = userName.charAt(0).toUpperCase();
-    }
-
-    let linkPart = ``;
-
-    if (linkToShow) {
-      linkPart = html`
-        <a class="linkText" href="${linkToShow}" target="_blank">
-          see original
-        </a>
-      `;
-    }
+    // first letter of username for the avatar circle
+    let firstLetter = this.user ? this.user.charAt(0).toUpperCase() : "";
 
     return html`
       <div class="cardBox">
+
+        <!-- top bar: avatar + username -->
         <div class="topPart">
           <div class="circle">${firstLetter}</div>
-          <span class="usernameText">${userName}</span>
+          <span class="usernameText">${this.user}</span>
         </div>
 
-        <img class="imageFox" src="${imageToShow}" alt="a fox" />
+        <!-- the photo -->
+        <img class="imageFox" src="${this.imgUrl}" alt="gallery image" />
 
+        <!-- caption below the photo -->
         <div class="bottomPart">
           <p class="captionText">
-            <strong>${userName}: </strong>${captionText}
+            <strong>${this.user}: </strong>${this.text}
           </p>
-          ${linkPart}
         </div>
+
       </div>
     `;
   }

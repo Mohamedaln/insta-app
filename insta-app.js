@@ -9,15 +9,13 @@ class InstaApp extends DDDSuper(LitElement) {
 
   constructor() {
     super();
-    this.imgUrl = "";
-    this.pageLink = "";
-    this.data1 = null;
+    // holds the array of posts from our JSON file
+    this.posts = [];
   }
 
   static get properties() {
     return {
-      imgUrl: { type: String },
-      pageLink: { type: String },
+      posts: { type: Array },
     };
   }
 
@@ -35,62 +33,40 @@ class InstaApp extends DDDSuper(LitElement) {
           max-width: 460px;
           margin: auto;
         }
-
-        .myButton {
-          display: block;
-          margin: 20px auto;
-          padding: 8px 20px;
-          background-color: #3897f0;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-        }
-
-        .myButton:hover {
-          background-color: #2277cc;
-        }
       `,
     ];
   }
 
   connectedCallback() {
     super.connectedCallback();
+    // load data as soon as the element connects to the page
     this.getData();
   }
 
   async getData() {
-    let response = await fetch("https://randomfox.ca/floof/");
-
+    // fetch from our own JSON file instead of randomfox
+    let response = await fetch("./data.json");
     let json = await response.json();
 
-    this.data1 = json;
-
-    let img = this.data1.image;
-    let link = this.data1.link;
-
-    this.imgUrl = img;
-    this.pageLink = link;
-  }
-
-  buttonClick() {
-    this.getData();
+    // store the array of posts so the page re-renders
+    this.posts = json.data;
   }
 
   render() {
-    let imageToShow = this.imgUrl;
-    let linkToShow = this.pageLink;
-
     return html`
       <div class="main">
-        <insta-card
-          imgUrl="${imageToShow}"
-          pageLink="${linkToShow}"
-          user="randomfox"
-          text="look at this little guy"
-        ></insta-card>
 
-        <button class="myButton" @click="${this.buttonClick}">new fox</button>
+        <!-- loop over every post and make a card for each one -->
+        ${this.posts.map(
+          (post) => html`
+            <insta-card
+              imgUrl="${post.image}"
+              user="mygallery"
+              text="${post.description}"
+            ></insta-card>
+          `
+        )}
+
       </div>
     `;
   }

@@ -45,7 +45,7 @@ class InstaApp extends DDDSuper(LitElement) {
 
   async getData() {
     // fetch from our own JSON file instead of randomfox
-    let response = await fetch("./data.json");
+    let response = await fetch("/api/data");
     let json = await response.json();
 
     // store the array of posts so the page re-renders

@@ -1,19 +1,19 @@
 {
   "data": [
-    {
-      "image": "https://randomfox.ca/images/1.jpg",
-      "title": "Morning Fox",
-      "description": "caught this little guy at sunrise"
-    },
-    {
-      "image": "https://randomfox.ca/images/2.jpg",
-      "title": "Sneaky Fox",
-      "description": "always up to something"
-    },
-    {
-      "image": "https://randomfox.ca/images/3.jpg",
-      "title": "Sleepy Fox",
-      "description": "just vibing in the grass"
-    }
+    { "id": 1, "name": "Morning Fox", "date": "2024-01-01", "thumb": "https://randomfox.ca/images/1.jpg", "full": "https://randomfox.ca/images/1.jpg", "description": "caught this little guy at sunrise", "authorName": "FoxLover99", "authorImg": "https://i.pravatar.cc/50?img=1", "userSince": "2021", "channel": "Fox Daily" },
+    { "id": 2, "name": "Sneaky Fox", "date": "2024-01-02", "thumb": "https://randomfox.ca/images/2.jpg", "full": "https://randomfox.ca/images/2.jpg", "description": "always up to something", "authorName": "WildLife22", "authorImg": "https://i.pravatar.cc/50?img=2", "userSince": "2020", "channel": "Wild Shots" },
+    { "id": 3, "name": "Sleepy Fox", "date": "2024-01-03", "thumb": "https://randomfox.ca/images/3.jpg", "full": "https://randomfox.ca/images/3.jpg", "description": "just vibing in the grass", "authorName": "NaturePics", "authorImg": "https://i.pravatar.cc/50?img=3", "userSince": "2019", "channel": "Nature Vibes" },
+    { "id": 4, "name": "Curious Fox", "date": "2024-01-04", "thumb": "https://randomfox.ca/images/4.jpg", "full": "https://randomfox.ca/images/4.jpg", "description": "what is that over there", "authorName": "FoxLover99", "authorImg": "https://i.pravatar.cc/50?img=1", "userSince": "2021", "channel": "Fox Daily" },
+    { "id": 5, "name": "Happy Fox", "date": "2024-01-05", "thumb": "https://randomfox.ca/images/5.jpg", "full": "https://randomfox.ca/images/5.jpg", "description": "this one is always smiling", "authorName": "WildLife22", "authorImg": "https://i.pravatar.cc/50?img=2", "userSince": "2020", "channel": "Wild Shots" },
+    { "id": 6, "name": "Running Fox", "date": "2024-01-06", "thumb": "https://randomfox.ca/images/6.jpg", "full": "https://randomfox.ca/images/6.jpg", "description": "zoom zoom little guy", "authorName": "NaturePics", "authorImg": "https://i.pravatar.cc/50?img=3", "userSince": "2019", "channel": "Nature Vibes" },
+    { "id": 7, "name": "Baby Fox", "date": "2024-01-07", "thumb": "https://randomfox.ca/images/7.jpg", "full": "https://randomfox.ca/images/7.jpg", "description": "so tiny and fluffy", "authorName": "FoxLover99", "authorImg": "https://i.pravatar.cc/50?img=1", "userSince": "2021", "channel": "Fox Daily" },
+    { "id": 8, "name": "Winter Fox", "date": "2024-01-08", "thumb": "https://randomfox.ca/images/8.jpg", "full": "https://randomfox.ca/images/8.jpg", "description": "cold outside but still cute", "authorName": "WildLife22", "authorImg": "https://i.pravatar.cc/50?img=2", "userSince": "2020", "channel": "Wild Shots" },
+    { "id": 9, "name": "Forest Fox", "date": "2024-01-09", "thumb": "https://randomfox.ca/images/9.jpg", "full": "https://randomfox.ca/images/9.jpg", "description": "deep in the woods", "authorName": "NaturePics", "authorImg": "https://i.pravatar.cc/50?img=3", "userSince": "2019", "channel": "Nature Vibes" },
+    { "id": 10, "name": "Hungry Fox", "date": "2024-01-10", "thumb": "https://randomfox.ca/images/10.jpg", "full": "https://randomfox.ca/images/10.jpg", "description": "looking for lunch", "authorName": "FoxLover99", "authorImg": "https://i.pravatar.cc/50?img=1", "userSince": "2021", "channel": "Fox Daily" },
+    { "id": 11, "name": "Fluffy Fox", "date": "2024-01-11", "thumb": "https://randomfox.ca/images/11.jpg", "full": "https://randomfox.ca/images/11.jpg", "description": "the fluffiest tail ever", "authorName": "WildLife22", "authorImg": "https://i.pravatar.cc/50?img=2", "userSince": "2020", "channel": "Wild Shots" },
+    { "id": 12, "name": "Sunset Fox", "date": "2024-01-12", "thumb": "https://randomfox.ca/images/12.jpg", "full": "https://randomfox.ca/images/12.jpg", "description": "golden hour fox", "authorName": "NaturePics", "authorImg": "https://i.pravatar.cc/50?img=3", "userSince": "2019", "channel": "Nature Vibes" },
+    { "id": 13, "name": "Jumping Fox", "date": "2024-01-13", "thumb": "https://randomfox.ca/images/13.jpg", "full": "https://randomfox.ca/images/13.jpg", "description": "got some air on that one", "authorName": "FoxLover99", "authorImg": "https://i.pravatar.cc/50?img=1", "userSince": "2021", "channel": "Fox Daily" },
+    { "id": 14, "name": "Hiding Fox", "date": "2024-01-14", "thumb": "https://randomfox.ca/images/14.jpg", "full": "https://randomfox.ca/images/14.jpg", "description": "peek a boo", "authorName": "WildLife22", "authorImg": "https://i.pravatar.cc/50?img=2", "userSince": "2020", "channel": "Wild Shots" },
+    { "id": 15, "name": "Night Fox", "date": "2024-01-15", "thumb": "https://randomfox.ca/images/15.jpg", "full": "https://randomfox.ca/images/15.jpg", "description": "night shift fox", "authorName": "NaturePics", "authorImg": "https://i.pravatar.cc/50?img=3", "userSince": "2019", "channel": "Nature Vibes" }
   ]
 }

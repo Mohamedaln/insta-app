@@ -9,29 +9,146 @@ class InstaApp extends DDDSuper(LitElement) {
 
   constructor() {
     super();
-    // holds the array of posts from our JSON file
-    this.posts = [];
+    this.posts1 = [];
+    this.idx1 = 0;
+    this.dark1 = false;
   }
 
   static get properties() {
     return {
-      posts: { type: Array },
+      ...super.properties,
+      posts1: { type: Array },
+      idx1: { type: Number },
+      dark1: { type: Boolean },
     };
   }
 
   static get styles() {
     return [
+      super.styles,
       css`
         :host {
           display: block;
-          background-color: #fafafa;
           min-height: 100vh;
+          background-color: #fafafa;
           padding: 16px;
         }
 
-        .main {
+        :host([dark1]) {
+          background-color: #111;
+          color: white;
+        }
+
+        .main1 {
           max-width: 460px;
           margin: auto;
+        }
+
+        .topBar1 {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+        }
+
+        .siteTitle1 {
+          font-size: 22px;
+          font-weight: bold;
+          color: #333;
+        }
+
+        :host([dark1]) .siteTitle1 {
+          color: white;
+        }
+
+        .darkBtn1 {
+          padding: 6px 12px;
+          border: none;
+          border-radius: 6px;
+          background: #333;
+          color: white;
+          cursor: pointer;
+          font-size: 13px;
+        }
+
+        :host([dark1]) .darkBtn1 {
+          background: white;
+          color: black;
+        }
+
+        .navRow1 {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 12px;
+        }
+
+        .navBtn1 {
+          padding: 8px 20px;
+          border: none;
+          border-radius: 6px;
+          background: #3897f0;
+          color: white;
+          cursor: pointer;
+          font-size: 14px;
+        }
+
+        .navBtn1:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+
+        .counter1 {
+          font-size: 13px;
+          color: #888;
+        }
+
+        :host([dark1]) .counter1 {
+          color: #aaa;
+        }
+
+        .dots1 {
+          display: flex;
+          justify-content: center;
+          gap: 6px;
+          margin-top: 12px;
+          flex-wrap: wrap;
+        }
+
+        .dot1 {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #ccc;
+          cursor: pointer;
+          border: none;
+          padding: 0;
+        }
+
+        .dot1.active1 {
+          background: #3897f0;
+        }
+
+        .shareBtn1 {
+          display: block;
+          margin: 12px auto 0;
+          padding: 7px 18px;
+          background: #5851db;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 13px;
+        }
+
+        @media (max-width: 500px) {
+          .main1 {
+            max-width: 100%;
+          }
+          .navBtn1 {
+            padding: 6px 12px;
+            font-size: 13px;
+          }
         }
       `,
     ];
@@ -39,34 +156,118 @@ class InstaApp extends DDDSuper(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    // load data as soon as the element connects to the page
-    this.getData();
+    this.checkUrl1();
+    this.getData1();
   }
 
-  async getData() {
-    // fetch from our own JSON file instead of randomfox
-    let response = await fetch("/api/data");
-    let json = await response.json();
+  checkUrl1() {
+    var url1 = new URLSearchParams(window.location.search);
+    var idx = url1.get("activeIndex");
+    if (idx !== null) {
+      this.idx1 = parseInt(idx);
+    }
+  }
 
-    // store the array of posts so the page re-renders
-    this.posts = json.data;
+  updateUrl1() {
+    var newUrl = window.location.pathname + "?activeIndex=" + this.idx1;
+    window.history.pushState({}, "", newUrl);
+  }
+
+  async getData1() {
+    var res1 = await fetch("/data.json");
+    var json1 = await res1.json();
+    this.posts1 = json1.data;
+  }
+
+  goNext1() {
+    var n1 = this.idx1;
+    n1 = n1 + 1;
+    if (n1 < this.posts1.length) {
+      this.idx1 = n1;
+      this.updateUrl1();
+    }
+  }
+
+  goPrev1() {
+    var n1 = this.idx1;
+    n1 = n1 - 1;
+    if (n1 >= 0) {
+      this.idx1 = n1;
+      this.updateUrl1();
+    }
+  }
+
+  goTo1(i2) {
+    this.idx1 = i2;
+    this.updateUrl1();
+  }
+
+  toggleDark1() {
+    this.dark1 = !this.dark1;
+    if (this.dark1) {
+      this.setAttribute("dark1", "");
+    } else {
+      this.removeAttribute("dark1");
+    }
+  }
+
+  sharePost1() {
+    var url2 = window.location.href;
+    navigator.clipboard.writeText(url2);
+    alert("link copied to clipboard!");
   }
 
   render() {
-    return html`
-      <div class="main">
+    var curPost1 = this.posts1[this.idx1];
+    var total1 = this.posts1.length;
+    var prevOff1 = this.idx1 === 0;
+    var nextOff1 = this.idx1 === total1 - 1;
 
-        <!-- loop over every post and make a card for each one -->
-        ${this.posts.map(
-          (post) => html`
+    return html`
+      <div class="main1">
+        <div class="topBar1">
+          <div class="siteTitle1">FoxGram</div>
+          <button class="darkBtn1" @click="${this.toggleDark1}">
+            ${this.dark1 ? "light mode" : "dark mode"}
+          </button>
+        </div>
+
+        ${curPost1
+          ? html`
             <insta-card
-              imgUrl="${post.image}"
-              user="mygallery"
-              text="${post.description}"
+              imgUrl="${curPost1.thumb}"
+              fullImg="${curPost1.full}"
+              user="${curPost1.authorName}"
+              text="${curPost1.description}"
+              authorImg="${curPost1.authorImg}"
+              userSince="${curPost1.userSince}"
+              channel="${curPost1.channel}"
+              postId="${String(curPost1.id)}"
+              postName="${curPost1.name}"
+              ?dark1="${this.dark1}"
             ></insta-card>
           `
-        )}
+          : html`<p>loading...</p>`
+        }
 
+        <div class="navRow1">
+          <button class="navBtn1" @click="${this.goPrev1}" ?disabled="${prevOff1}">prev</button>
+          <span class="counter1">${this.idx1 + 1} of ${total1}</span>
+          <button class="navBtn1" @click="${this.goNext1}" ?disabled="${nextOff1}">next</button>
+        </div>
+
+        <div class="dots1">
+          ${this.posts1.map(
+            (p1, i2) => html`
+              <button
+                class="dot1 ${this.idx1 === i2 ? "active1" : ""}"
+                @click="${() => this.goTo1(i2)}"
+              ></button>
+            `
+          )}
+        </div>
+
+        <button class="shareBtn1" @click="${this.sharePost1}">share this fox</button>
       </div>
     `;
   }

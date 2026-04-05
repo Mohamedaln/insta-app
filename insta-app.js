@@ -174,7 +174,14 @@ class InstaApp extends DDDSuper(LitElement) {
   }
 
   async getData1() {
-    var res1 = await fetch("/data.json");
+    var url1 = "";
+    // check if we are on localhost or live
+    if (window.location.hostname === "localhost") {
+      url1 = "/data.json";
+    } else {
+      url1 = "/api/data";
+    }
+    var res1 = await fetch(url1);
     var json1 = await res1.json();
     this.posts1 = json1.data;
   }

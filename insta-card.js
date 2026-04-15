@@ -17,12 +17,10 @@ class InstaCard extends DDDSuper(LitElement) {
     this.channel = "";
     this.postId = "";
     this.postName = "";
+    this.postDate = "";
     this.dark1 = false;
-    // is the image visible on screen yet
     this.visible1 = false;
-    // is this post liked or not
     this.liked1 = false;
-    // how many likes
     this.likeCount1 = 0;
   }
 
@@ -38,6 +36,7 @@ class InstaCard extends DDDSuper(LitElement) {
       channel: { type: String },
       postId: { type: String },
       postName: { type: String },
+      postDate: { type: String },
       dark1: { type: Boolean },
       visible1: { type: Boolean },
       liked1: { type: Boolean },
@@ -69,7 +68,6 @@ class InstaCard extends DDDSuper(LitElement) {
           color: white;
         }
 
-        /* top bar */
         .topPart {
           display: flex;
           align-items: center;
@@ -82,7 +80,6 @@ class InstaCard extends DDDSuper(LitElement) {
           border-bottom-color: #444;
         }
 
-        /* author avatar image */
         .avatarImg1 {
           width: 36px;
           height: 36px;
@@ -110,7 +107,6 @@ class InstaCard extends DDDSuper(LitElement) {
           color: #999;
         }
 
-        /* the photo - only shows when visible */
         .imgBox1 {
           width: 100%;
           aspect-ratio: 1 / 1;
@@ -118,6 +114,10 @@ class InstaCard extends DDDSuper(LitElement) {
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        .cardBox.dark1 .imgBox1 {
+          background: #333;
         }
 
         .imageFox {
@@ -132,19 +132,8 @@ class InstaCard extends DDDSuper(LitElement) {
           font-size: 13px;
         }
 
-        /* bottom area */
         .bottomPart {
           padding: 12px;
-        }
-
-        .captionText {
-          font-size: 14px;
-          color: #333;
-          margin: 0 0 10px 0;
-        }
-
-        .cardBox.dark1 .captionText {
-          color: #ddd;
         }
 
         /* like button row */
@@ -152,14 +141,31 @@ class InstaCard extends DDDSuper(LitElement) {
           display: flex;
           align-items: center;
           gap: 8px;
+          margin-bottom: 8px;
         }
 
         .likeBtn1 {
           background: none;
-          border: none;
+          border: 1px solid #ddd;
+          border-radius: 20px;
           cursor: pointer;
-          font-size: 22px;
-          padding: 0;
+          font-size: 16px;
+          padding: 4px 10px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .cardBox.dark1 .likeBtn1 {
+          border-color: #555;
+        }
+
+        .likeBtn1:hover {
+          background: #fff0f0;
+        }
+
+        .cardBox.dark1 .likeBtn1:hover {
+          background: #3a2a2a;
         }
 
         .likeCnt1 {
@@ -171,14 +177,25 @@ class InstaCard extends DDDSuper(LitElement) {
           color: #aaa;
         }
 
-        /* author details at bottom */
-        .authorRow1 {
-          margin-top: 8px;
-          font-size: 11px;
-          color: #aaa;
+        .captionText {
+          font-size: 14px;
+          color: #333;
+          margin: 0 0 8px 0;
         }
 
-        /* mobile */
+        .cardBox.dark1 .captionText {
+          color: #ddd;
+        }
+
+        /* date and author info */
+        .metaRow1 {
+          margin-top: 6px;
+          font-size: 11px;
+          color: #aaa;
+          display: flex;
+          justify-content: space-between;
+        }
+
         @media (max-width: 500px) {
           .cardBox {
             border-radius: 0;
@@ -190,39 +207,30 @@ class InstaCard extends DDDSuper(LitElement) {
     ];
   }
 
-  // runs when element is added to the page
   connectedCallback() {
     super.connectedCallback();
-    // set up intersection observer to detect when card is visible
     this.obs1 = new IntersectionObserver((entries) => {
       var e1 = entries[0];
       if (e1.isIntersecting) {
         this.visible1 = true;
-        // stop watching once visible
         this.obs1.disconnect();
       }
     });
-    // start watching this element
     this.obs1.observe(this);
   }
 
-  // this runs every time a property changes
   updated(changedProperties) {
     if (super.updated) {
       super.updated(changedProperties);
     }
     if (changedProperties.has('postId') && this.postId) {
-      // reset likes first before loading new ones
       this.liked1 = false;
       this.likeCount1 = 0;
       this.loadLikes1();
     }
   }
 
-  // load likes saved in localstorage for this specific post
   loadLikes1() {
-    console.log("loading likes for postId:", this.postId);
-    // each post has its own key using the postId
     var key1 = "likes_" + this.postId;
     var saved1 = localStorage.getItem(key1);
     if (saved1 !== null) {
@@ -232,7 +240,6 @@ class InstaCard extends DDDSuper(LitElement) {
     }
   }
 
-  // save likes to localstorage
   saveLikes1() {
     var key1 = "likes_" + this.postId;
     var data1 = {
@@ -242,7 +249,6 @@ class InstaCard extends DDDSuper(LitElement) {
     localStorage.setItem(key1, JSON.stringify(data1));
   }
 
-  // toggle like on and off
   toggleLike1() {
     if (this.liked1 === false) {
       this.liked1 = true;
@@ -264,39 +270,39 @@ class InstaCard extends DDDSuper(LitElement) {
     return html`
       <div class="${darkClass1}">
 
-        <!-- top: author info -->
         <div class="topPart">
-          <img class="avatarImg1" src="${this.authorImg}" alt="author" />
+          <img class="avatarImg1" src="${this.authorImg}" alt="author photo" />
           <div class="userInfo1">
             <span class="usernameText">${this.user}</span>
             <span class="channelText1">${this.channel}</span>
           </div>
         </div>
 
-        <!-- image: only loads when visible -->
         <div class="imgBox1">
           ${this.visible1
             ? html`<img class="imageFox" src="${this.imgUrl}" alt="${this.postName}" />`
-            : html`<span class="loadingTxt1">scroll to load</span>`
+            : html`<span class="loadingTxt1">loading image...</span>`
           }
         </div>
 
-        <!-- bottom: caption + likes + author details -->
         <div class="bottomPart">
+
+          <div class="likeRow1">
+            <button class="likeBtn1" @click="${this.toggleLike1}" title="like this post">
+              ${heartIcon1} ${this.likeCount1}
+            </button>
+            <span class="likeCnt1">${this.likeCount1 === 1 ? "like" : "likes"}</span>
+          </div>
+
           <p class="captionText">
             <strong>${this.user}: </strong>${this.text}
           </p>
 
-          <div class="likeRow1">
-            <button class="likeBtn1" @click="${this.toggleLike1}">
-              ${heartIcon1}
-            </button>
-            <span class="likeCnt1">${this.likeCount1} likes</span>
+          <div class="metaRow1">
+            <span>member since ${this.userSince}</span>
+            <span>${this.postDate}</span>
           </div>
 
-          <div class="authorRow1">
-            member since ${this.userSince}
-          </div>
         </div>
 
       </div>

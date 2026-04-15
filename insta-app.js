@@ -12,6 +12,8 @@ class InstaApp extends DDDSuper(LitElement) {
     this.posts1 = [];
     this.idx1 = 0;
     this.dark1 = false;
+    // true while waiting for data
+    this.loading1 = true;
   }
 
   static get properties() {
@@ -20,6 +22,7 @@ class InstaApp extends DDDSuper(LitElement) {
       posts1: { type: Array },
       idx1: { type: Number },
       dark1: { type: Boolean },
+      loading1: { type: Boolean },
     };
   }
 
@@ -74,6 +77,23 @@ class InstaApp extends DDDSuper(LitElement) {
         :host([dark1]) .darkBtn1 {
           background: white;
           color: black;
+        }
+
+        /* loading placeholder so page doesnt flash */
+        .loadBox1 {
+          background: #eee;
+          border-radius: 10px;
+          height: 400px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #aaa;
+          font-size: 14px;
+        }
+
+        :host([dark1]) .loadBox1 {
+          background: #333;
+          color: #666;
         }
 
         .navRow1 {
@@ -175,7 +195,6 @@ class InstaApp extends DDDSuper(LitElement) {
 
   async getData1() {
     var url1 = "";
-    // check if we are on localhost or live
     if (window.location.hostname === "localhost") {
       url1 = "/data.json";
     } else {
@@ -184,6 +203,8 @@ class InstaApp extends DDDSuper(LitElement) {
     var res1 = await fetch(url1);
     var json1 = await res1.json();
     this.posts1 = json1.data;
+    // done loading
+    this.loading1 = false;
   }
 
   goNext1() {
@@ -221,7 +242,7 @@ class InstaApp extends DDDSuper(LitElement) {
   sharePost1() {
     var url2 = window.location.href;
     navigator.clipboard.writeText(url2);
-    alert("link copied to clipboard!");
+    alert("link copied!");
   }
 
   render() {
@@ -232,6 +253,7 @@ class InstaApp extends DDDSuper(LitElement) {
 
     return html`
       <div class="main1">
+
         <div class="topBar1">
           <div class="siteTitle1">FoxGram</div>
           <button class="darkBtn1" @click="${this.toggleDark1}">
@@ -239,8 +261,10 @@ class InstaApp extends DDDSuper(LitElement) {
           </button>
         </div>
 
-        ${curPost1
-          ? html`
+        <!-- show placeholder while loading to avoid flash -->
+        ${this.loading1
+          ? html`<div class="loadBox1">loading foxes...</div>`
+          : html`
             <insta-card
               imgUrl="${curPost1.thumb}"
               fullImg="${curPost1.full}"
@@ -251,16 +275,28 @@ class InstaApp extends DDDSuper(LitElement) {
               channel="${curPost1.channel}"
               postId="${String(curPost1.id)}"
               postName="${curPost1.name}"
+              postDate="${curPost1.date}"
               ?dark1="${this.dark1}"
             ></insta-card>
           `
-          : html`<p>loading...</p>`
         }
 
         <div class="navRow1">
-          <button class="navBtn1" @click="${this.goPrev1}" ?disabled="${prevOff1}">prev</button>
+          <button
+            class="navBtn1"
+            @click="${this.goPrev1}"
+            ?disabled="${prevOff1}"
+            title="previous image"
+          >prev</button>
+
           <span class="counter1">${this.idx1 + 1} of ${total1}</span>
-          <button class="navBtn1" @click="${this.goNext1}" ?disabled="${nextOff1}">next</button>
+
+          <button
+            class="navBtn1"
+            @click="${this.goNext1}"
+            ?disabled="${nextOff1}"
+            title="next image"
+          >next</button>
         </div>
 
         <div class="dots1">
@@ -269,12 +305,16 @@ class InstaApp extends DDDSuper(LitElement) {
               <button
                 class="dot1 ${this.idx1 === i2 ? "active1" : ""}"
                 @click="${() => this.goTo1(i2)}"
+                title="go to image ${i2 + 1}"
               ></button>
             `
           )}
         </div>
 
-        <button class="shareBtn1" @click="${this.sharePost1}">share this fox</button>
+        <button class="shareBtn1" @click="${this.sharePost1}">
+          share this fox
+        </button>
+
       </div>
     `;
   }
